@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Futurezy: schedule a message for the date you pick</title>
+<meta name="description" content="Futurezy lets you schedule something to happen on a date. Create an Event, pick a date and time, and its messages go out at that time, by email or in the Futurezy app.">
+<style>
+  :root {
+    --bg: #fbfbfd;
+    --fg: #1d1d27;
+    --muted: #5b5b6b;
+    --accent: #5b5bd6;
+    --accent-soft: #ececfb;
+    --border: #e3e3ec;
+    --card: #ffffff;
+    --warn-bg: #fff6e0;
+    --warn-fg: #7a5200;
+    --warn-border: #f0d595;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14141a;
+      --fg: #ececf2;
+      --muted: #a3a3b5;
+      --accent: #9d9dff;
+      --accent-soft: #24243a;
+      --border: #2c2c38;
+      --card: #1b1b23;
+      --warn-bg: #3a2e10;
+      --warn-fg: #f5d68a;
+      --warn-border: #5e4a17;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 1rem;
+    line-height: 1.65;
+    -webkit-text-size-adjust: 100%;
+  }
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+  }
+  a { color: var(--accent); text-underline-offset: 2px; }
+  a:hover { text-decoration-thickness: 2px; }
+  header.site {
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 0;
+  }
+  header.site .container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+  }
+  .brand {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--fg);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+  nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 1rem;
+  }
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+  nav a:hover { color: var(--accent); }
+  main section {
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  main section:last-child { border-bottom: 0; }
+  .hero { padding: 3.5rem 0 3rem; }
+  .hero h1 {
+    font-size: 2rem;
+    line-height: 1.2;
+    margin: 0 0 1rem;
+    letter-spacing: -0.02em;
+  }
+  .hero p.lead {
+    font-size: 1.125rem;
+    color: var(--fg);
+    margin: 0 0 1.25rem;
+  }
+  .note {
+    display: inline-block;
+    font-size: 0.875rem;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    margin: 0;
+  }
+  h2 {
+    font-size: 1.5rem;
+    line-height: 1.3;
+    margin: 0 0 1rem;
+    letter-spacing: -0.01em;
+  }
+  h3 {
+    font-size: 1.1rem;
+    margin: 2rem 0 0.5rem;
+  }
+  ol.steps {
+    padding-left: 1.5rem;
+    margin: 0;
+  }
+  ol.steps li { margin-bottom: 0.75rem; padding-left: 0.25rem; }
+  ol.steps li::marker { color: var(--accent); font-weight: 700; }
+  .policy ul { padding-left: 1.25rem; margin: 0; }
+  .policy li { margin-bottom: 0.5rem; }
+  .badge {
+    display: inline-block;
+    background: var(--warn-bg);
+    color: var(--warn-fg);
+    border: 1px solid var(--warn-border);
+    border-radius: 6px;
+    padding: 0.35rem 0.75rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin: 0 0 0.75rem;
+  }
+  .effective { color: var(--muted); font-size: 0.95rem; margin: 0; }
+  footer.site {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 0 2.5rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  footer.site .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+  }
+  footer.site ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 1rem;
+  }
+  footer.site a { color: var(--muted); }
+  @media (min-width: 640px) {
+    .hero { padding: 5rem 0 4rem; }
+    .hero h1 { font-size: 2.6rem; }
+    h2 { font-size: 1.75rem; }
+  }
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="container">
+    <a class="brand" href="/">Futurezy</a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#privacy">Privacy</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+    <section class="hero">
+      <h1>Schedule a message for the date you pick.</h1>
+      <p class="lead">Futurezy lets you schedule something to happen on a date. Create an Event, pick a date and time, and its messages go out at that time, by email or in the Futurezy app.</p>
+      <p class="note">Futurezy is in development.</p>
+    </section>
+
+    <section id="how">
+      <h2>How it works</h2>
+      <ol class="steps">
+        <li>Sign up with your email address and a password. You verify your email address before you can sign in.</li>
+        <li>Create an Event: give it a title, pick a date and time in your time zone, and add one or more messages.</li>
+        <li>Each message is either an email to an address you enter, or an in-app message to another Futurezy user.</li>
+        <li>Until it goes out, you can view, edit or cancel your Event.</li>
+        <li>At the time you picked, Futurezy sends the messages. Emails come from no-reply@futurezy.com, with replies going to the person who scheduled them.</li>
+      </ol>
+    </section>
+
+    <section id="privacy" class="policy">
+      <h2>Privacy Policy</h2>
+      <p class="badge">Draft, pending legal review</p>
+      <p class="effective">Effective date: October 23, 2026</p>
+
+      <h3>What we collect</h3>
+      <ul>
+        <li>Your account: your email address and your display name. Sign-in is handled by Amazon Cognito, and Futurezy's own database does not store your password.</li>
+        <li>The Events you create: their title, date, time and time zone, and their messages. For an email message, that is the recipient's email address, the subject and the body. For an in-app message, it is the recipient's Futurezy account and the body.</li>
+      </ul>
+
+      <h3>How we use it</h3>
+      <ul>
+        <li>We use your email address to run your account, and the addresses and text in your Events to deliver the messages you schedule, at the time you pick.</li>
+        <li>Our message-delivery logs record internal ids, not message text or email addresses.</li>
+      </ul>
+
+      <h3>Transactional email only</h3>
+      <ul>
+        <li>The only email Futurezy sends is account email, such as verifying your address, and the messages people schedule. We do not send marketing email or newsletters, and we do not sell your data.</li>
+      </ul>
+
+      <h3>How to stop messages</h3>
+      <ul>
+        <li>If you scheduled a message, you can cancel its Event at any time before it goes out.</li>
+        <li>If you received an email through Futurezy, replying to it reaches the person who scheduled it.</li>
+        <li>To ask us to stop sending email to your address, or to delete your account, contact us at <a href="mailto:CONTACT_EMAIL_PLACEHOLDER">CONTACT_EMAIL_PLACEHOLDER</a>.</li>
+      </ul>
+
+      <h3>Changes</h3>
+      <ul>
+        <li>If this policy changes, we will update this page and its effective date.</li>
+      </ul>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>Questions about Futurezy or this policy? Email us at <a href="mailto:CONTACT_EMAIL_PLACEHOLDER">CONTACT_EMAIL_PLACEHOLDER</a>.</p>
+    </section>
+  </div>
+</main>
+
+<footer class="site">
+  <div class="container">
+    <p style="margin:0">© 2026 OWNER_LINE_PLACEHOLDER</p>
+    <ul>
+      <li><a href="#privacy">Privacy</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</footer>
+</body>
+</html>
